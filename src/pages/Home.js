@@ -43,12 +43,18 @@ const Home = () => {
     }, [])
 
     const navigateToBusiness = (id) => {
-        history.push(`/business/${id}`)
+        localStorage.setItem("businessId", id)
+        history.push(`/admin`)
+    }
+
+    let businessId = localStorage.getItem("businessId")
+    if (businessId){
+        history.push(`/admin`)
     }
 
     return (
         <div>
-            Business Page
+            Your Business
             {
                 businessList.map(business => {
                     

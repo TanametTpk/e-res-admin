@@ -56,24 +56,27 @@ export default function Tasks(props) {
             </TableCell>
             <TableCell className={tableCellClasses}>{tasks[value].name} ({tasks[value].detail})</TableCell>
             <TableCell className={classes.tableActions}>
-              <Tooltip
-                id="tooltip-top"
-                title="Show QRCode"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}
-              >
-                <IconButton
-                  aria-label="CropFreeIcon"
-                  className={classes.tableActionButton}
-                  onClick={() => props.showQR(tasks[value])}
+              {
+                !props.disableQR &&
+                <Tooltip
+                  id="tooltip-top"
+                  title="Show QRCode"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
                 >
-                  <CropFreeIcon
-                    className={
-                      classes.tableActionButtonIcon + " " + classes.edit
-                    }
-                  />
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    aria-label="CropFreeIcon"
+                    className={classes.tableActionButton}
+                    onClick={() => props.showQR(tasks[value])}
+                  >
+                    <CropFreeIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.edit
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              }
               <Tooltip
                 id="tooltip-top-start"
                 title="Remove"

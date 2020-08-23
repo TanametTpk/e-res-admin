@@ -16,39 +16,51 @@
 
 */
 // @material-ui/icons
-import Dashboard from "@material-ui/icons/Dashboard";
-import Person from "@material-ui/icons/Person";
+// import Dashboard from "@material-ui/icons/Dashboard";
+// import Person from "@material-ui/icons/Person";
 // import LibraryBooks from "@material-ui/icons/LibraryBooks";
 // import BubbleChart from "@material-ui/icons/BubbleChart";
 // import Notifications from "@material-ui/icons/Notifications";
 // core components/views for Admin layout
-import DashboardPage from "./views/Dashboard/Dashboard.js";
+// import DashboardPage from "./views/Dashboard/Dashboard.js";
 import UserProfile from "./views/UserProfile/UserProfile.js";
 import TableList from "./views/TableList/TableList.js";
+import Products from './views/Products/Products';
+import BorderClearIcon from '@material-ui/icons/BorderClear';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+
+import AllInboxIcon from '@material-ui/icons/AllInbox';
 // import Typography from "./views/Typography/Typography.js";
 // import Icons from "./views/Icons/Icons.js";
 // import NotificationsPage from "./views/Notifications/Notifications.js";
 
 const dashboardRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: Dashboard,
-    component: DashboardPage,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/dashboard",
+  //   name: "Dashboard",
+  //   rtlName: "لوحة القيادة",
+  //   icon: Dashboard,
+  //   component: DashboardPage,
+  //   layout: "/admin"
+  // },
   {
     path: "/zones",
     name: "Zone Manager",
-    icon: Person,
+    icon: BorderClearIcon,
     component: UserProfile,
+    layout: "/admin"
+  },
+  {
+    path: "/products",
+    name: "Products",
+    icon: AllInboxIcon,
+    component: Products,
     layout: "/admin"
   },
   {
     path: "/orders",
     name: "Orders",
-    icon: "content_paste",
+    icon: AssignmentIcon,
     component: TableList,
     layout: "/admin"
   },

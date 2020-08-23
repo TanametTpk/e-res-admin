@@ -40,8 +40,9 @@ export default {
         return res.data
     },
 
-    getOrders: async (businessId) => {
-        let res = await axios.get(`${createURL(businessId)}/orders`)
+    getOrders: async (businessId, isConfirm) => {
+        let confirmOrder = isConfirm ? "?confirm=isConfirm=true" : ""
+        let res = await axios.get(`${createURL(businessId)}/orders${confirmOrder}`)
         return res.data
     },
 

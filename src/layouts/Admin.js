@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -15,12 +15,14 @@ import styles from "../assets/jss/material-dashboard-react/layouts/adminStyle.js
 
 import bgImage from "../assets/img/sidebar-2.jpg";
 import logo from "../assets/img/reactlogo.png";
+import {useHistory} from 'react-router-dom'
 
 let ps;
 
 const switchRoutes = (
   <Switch>
     {routes.map((prop, key) => {
+
       if (prop.layout === "/admin") {
         return (
           <Route
@@ -32,7 +34,7 @@ const switchRoutes = (
       }
       return null;
     })}
-    <Redirect from="/admin" to="/admin/dashboard" />
+    <Redirect from="/admin" to="/admin/orders" />
   </Switch>
 );
 
@@ -47,6 +49,18 @@ export default function Admin({ ...rest }) {
   const [image, setImage] = React.useState(bgImage);
   const [color, setColor] = React.useState("blue");
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const history = useHistory()
+  const [businessId, setBusinessId] = useState("")
+
+  useEffect(() => {
+
+    let business = localStorage.getItem("businessId")
+    setBusinessId(business)
+
+    if (!business) history.push("/")
+
+  }, [])
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -58,6 +72,7 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
+  
   // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {

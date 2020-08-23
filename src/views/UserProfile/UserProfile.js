@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -20,7 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import QRCode from "react-qr-code";
 
-import { bugs } from "variables/general.js";
+import Api from '../../api/business'
 
 const styles = {
   cardCategoryWhite: {
@@ -50,6 +50,21 @@ export default function UserProfile() {
   const [zones, setZones] = useState([])
   const [ zoneName, setZoneName ] = useState("")
   const [ zoneDetail, setZoneDetail ] = useState("")
+  const [ businessId, setBusinessId ] = useState("")
+
+  useEffect(() => {
+    
+    const fetchZone = async() => {
+      let businessId = localStorage.getItem("businessId")
+      let zones = await Api.getZones(businessId)
+
+      setZones(zones)
+      setBusinessId(businessId)
+    }
+
+    fetchZone()
+
+  }, [])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,22 +80,21 @@ export default function UserProfile() {
     handleClickOpen()
   }
 
-  const addZone = () => {
+  const addZone = async () => {
+    let zone = await Api.createZone(businessId, zoneName, zoneDetail);
 
     setZones([
       ...zones,
-      {
-        name: zoneName,
-        detail: zoneDetail
-      }
+      zone
     ])
 
     setZoneName("")
     setZoneDetail("")
   }
 
-  const removeZone = (item) => {
-
+  const removeZone = async (item) => {
+    await Api.removeZone(businessId, item._id);
+    setZones(zones.filter(z => z._id !== item._id))
   }
 
   return (
@@ -147,7 +161,7 @@ export default function UserProfile() {
                     checkedIndexes={[]}
                     tasksIndexes={zones.map((z, i) => i)}
                     tasks={zones}
-                    delete={ (item) => console.log("delete", item)}
+                    delete={removeZone}
                     showQR={showQr}
                   />
                 )
@@ -167,7 +181,7 @@ export default function UserProfile() {
         <DialogContent>
           {
             qr? 
-              <QRCode value={`businessid-${qr.name}`} />
+              <QRCode value={`http://localhost:3000?businessId=${businessId}&zone=${qr._id}`} />
             :
               <div> can't show qr code </div>
           }
