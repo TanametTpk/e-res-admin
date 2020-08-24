@@ -18,11 +18,11 @@ export default {
         return res.data
     },
 
-    addProduct: async (businessId, name, detail, image, price) => {
+    addProduct: async (businessId, name, detail, photo, price) => {
         let product = {
             name,
             detail,
-            image,
+            photo,
             price,
             business: businessId
         }
@@ -41,7 +41,7 @@ export default {
     },
 
     getOrders: async (businessId, isConfirm) => {
-        let confirmOrder = isConfirm ? "?confirm=isConfirm=true" : ""
+        let confirmOrder = isConfirm ? "?confirm=true" : ""
         let res = await axios.get(`${createURL(businessId)}/orders${confirmOrder}`)
         return res.data
     },

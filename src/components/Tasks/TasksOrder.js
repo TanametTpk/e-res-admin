@@ -54,7 +54,14 @@ export default function Tasks(props) {
                 }}
               /> */}
             </TableCell>
-            <TableCell className={tableCellClasses}>{tasks[value]}</TableCell>
+            <TableCell className={tableCellClasses}>
+              {
+                tasks[value].product && tasks[value].zone  ? 
+                  `${tasks[value].product.name} จำนวน ${tasks[value].quantity} (${tasks[value].zone.name})` 
+                : 
+                  "something error"
+              }
+            </TableCell>
             <TableCell className={classes.tableActions}>
               {
                 !props.disableNext &&

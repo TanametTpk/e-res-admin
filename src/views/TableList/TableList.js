@@ -10,6 +10,7 @@ import LoopIcon from '@material-ui/icons/Loop';
 import Tasks from "components/Tasks/TasksOrder.js";
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import Api from '../../api/business'
+import {initiateSocket, disconnectSocket, subscribeToPlacedOrder} from '../../api/socket'
 
 export default function TableList() {
 
@@ -19,36 +20,56 @@ export default function TableList() {
   let [doneOrder, setDoneOrder] = useState([])
 
   useEffect(() => {
-    
-    const fetchOrder = async() => {
-      let businessId = localStorage.getItem("businessId")
-      let placed_orders_p = Api.getOrders(businessId)
-      let confirm_orders_p = Api.getOrders(businessId, true)
-      let [placed_order, confirm_orders] = await Promise.all([
-        placed_orders_p,
-        confirm_orders_p
-      ])
+    if (businessId) initiateSocket(businessId);
 
-      setBusinessId(businessId)
-      setPlacedOrder(placed_order)
-      setProcessingOrder(confirm_orders.filter((order) => order.type === "process"))
-      setDoneOrder(confirm_orders.filter((order) => order.type === "done"))
+    subscribeToPlacedOrder((err, orders) => {
+      if(err) return;
+      console.log("placed socket", orders);
+      fetchOrder()
+    });
+
+    return () => {
+      disconnectSocket();
     }
+  }, [businessId])
+
+  useEffect(() => {
 
     fetchOrder()
 
   }, [])
 
+  const fetchOrder = async() => {
+    let businessId = localStorage.getItem("businessId")
+    let placed_orders_p = Api.getOrders(businessId)
+    let confirm_orders_p = Api.getOrders(businessId, true)
+    let [placed_order, confirm_orders] = await Promise.all([
+      placed_orders_p,
+      confirm_orders_p
+    ])
+
+    setBusinessId(businessId)
+    setPlacedOrder(placed_order)
+    setProcessingOrder(confirm_orders.filter((order) => order.status === "process"))
+    setDoneOrder(confirm_orders.filter((order) => order.status === "done"))
+  }
+
   const movePlacedToDoing = async (item) => {
-    let result = await Api.updateStatusOrder(businessId, item._id, "process")
+    await Api.updateStatusOrder(businessId, item._id, "process")
     setPlacedOrder(placed_order.filter(o => o._id !== item._id))
-    setProcessingOrder([...processing_order, result])
+    setProcessingOrder([...processing_order, item])
   }
 
   const moveDoingToDone = async (item) => {
-    let result = await Api.updateStatusOrder(businessId, item._id, "done")
+    await Api.updateStatusOrder(businessId, item._id, "done")
     setProcessingOrder(processing_order.filter(o => o._id !== item._id))
-    setDoneOrder([...doneOrder, result])
+    setDoneOrder([...doneOrder, item])
+  }
+
+  const cancelOrder = async (item) => {
+    await Api.updateStatusOrder(businessId, item._id, "cancel")
+    setPlacedOrder(placed_order.filter(o => o._id !== item._id))
+    setProcessingOrder(processing_order.filter(o => o._id !== item._id))
   }
 
   return (
@@ -68,6 +89,7 @@ export default function TableList() {
                     okTooltip="confirm order"
                     tasks={placed_order}
                     done={movePlacedToDoing}
+                    delete={cancelOrder}
                   />
                 )
               },
