@@ -10,7 +10,11 @@ import LoopIcon from '@material-ui/icons/Loop';
 import Tasks from "components/Tasks/TasksOrder.js";
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import Api from '../../api/business'
-import {initiateSocket, disconnectSocket, subscribeToPlacedOrder} from '../../api/socket'
+import {initiateSocket, disconnectSocket, subscribeToPlacedOrder, subscribeToCheckBill} from '../../api/socket'
+
+import Backdrop from '@material-ui/core/Backdrop';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 export default function TableList() {
 
@@ -18,6 +22,15 @@ export default function TableList() {
   let [placed_order, setPlacedOrder] = useState([])
   let [processing_order, setProcessingOrder] = useState([])
   let [doneOrder, setDoneOrder] = useState([])
+  const [checkBill, setCheckBill] = useState(false);
+
+  const closeAlert = () => {
+    setCheckBill(false);
+  };
+
+  const showCheckBillAlert = () => {
+    setCheckBill(true);
+  };
 
   useEffect(() => {
     if (businessId) initiateSocket(businessId);
@@ -27,6 +40,10 @@ export default function TableList() {
       console.log("placed socket", orders);
       fetchOrder()
     });
+
+    subscribeToCheckBill((err) => {
+      showCheckBillAlert()
+    })
 
     return () => {
       disconnectSocket();
@@ -72,6 +89,11 @@ export default function TableList() {
     setProcessingOrder(processing_order.filter(o => o._id !== item._id))
   }
 
+  const deleteAllOrder = async () => {
+    await Api.removeAllORder(businessId)
+    fetchOrder()
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={8}>
@@ -115,25 +137,19 @@ export default function TableList() {
                     tasksIndexes={doneOrder.map((o, i) => i)}
                     tasks={doneOrder}
                     disableNext
+                    disableRemove
                   />
                 )
               }
-              // ,{
-              //   tabName: "Incart",
-              //   tabIcon: ShoppingCartIcon,
-              //   tabContent: (
-              //     <Tasks
-              //       checkedIndexes={[1]}
-              //       tasksIndexes={[0, 1, 2]}
-              //       tasks={server}
-              //       disableNext
-              //       disableRemove
-              //     />
-              //   )
-              // }
             ]}
           />
         </GridItem>
+        <Backdrop open={checkBill} onClick={closeAlert} style={{zIndex:"1000"}}>
+          <Paper>
+            <h1>เก็บเงินแล้ววววววววว</h1>
+          </Paper>
+        </Backdrop>
+        <Button onClick={deleteAllOrder} variant="outlined" color="secondary" >clear</Button>
     </GridContainer>
   );
 }

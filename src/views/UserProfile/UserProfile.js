@@ -19,7 +19,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import QRCode from "react-qr-code";
-
+import config from '../../configs/network'
 import Api from '../../api/business'
 
 const styles = {
@@ -181,7 +181,9 @@ export default function UserProfile() {
         <DialogContent>
           {
             qr? 
-              <QRCode value={`http://localhost:3000?businessId=${businessId}&zone=${qr._id}`} />
+              <div>
+                <QRCode value={`${config.CLIENT}?businessId=${businessId}&zone=${qr._id}`} />
+              </div>
             :
               <div> can't show qr code </div>
           }
