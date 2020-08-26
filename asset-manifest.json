@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/e-res-admin/static/css/main.8e9f8467.chunk.css",
+    "main.js": "/e-res-admin/static/js/main.9f132f47.chunk.js",
+    "main.js.map": "/e-res-admin/static/js/main.9f132f47.chunk.js.map",
+    "runtime-main.js": "/e-res-admin/static/js/runtime-main.2f1b0e62.js",
+    "runtime-main.js.map": "/e-res-admin/static/js/runtime-main.2f1b0e62.js.map",
+    "static/css/2.d0176e96.chunk.css": "/e-res-admin/static/css/2.d0176e96.chunk.css",
+    "static/js/2.a936a714.chunk.js": "/e-res-admin/static/js/2.a936a714.chunk.js",
+    "static/js/2.a936a714.chunk.js.map": "/e-res-admin/static/js/2.a936a714.chunk.js.map",
+    "index.html": "/e-res-admin/index.html",
+    "precache-manifest.e3a1b48f07910883f6170131c77c71d9.js": "/e-res-admin/precache-manifest.e3a1b48f07910883f6170131c77c71d9.js",
+    "service-worker.js": "/e-res-admin/service-worker.js",
+    "static/css/2.d0176e96.chunk.css.map": "/e-res-admin/static/css/2.d0176e96.chunk.css.map",
+    "static/css/main.8e9f8467.chunk.css.map": "/e-res-admin/static/css/main.8e9f8467.chunk.css.map",
+    "static/js/2.a936a714.chunk.js.LICENSE.txt": "/e-res-admin/static/js/2.a936a714.chunk.js.LICENSE.txt",
+    "static/media/sidebar-2.jpg": "/e-res-admin/static/media/sidebar-2.310509c9.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2f1b0e62.js",
+    "static/css/2.d0176e96.chunk.css",
+    "static/js/2.a936a714.chunk.js",
+    "static/css/main.8e9f8467.chunk.css",
+    "static/js/main.9f132f47.chunk.js"
+  ]
+}
